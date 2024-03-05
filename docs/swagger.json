@@ -1,0 +1,859 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Este é um app construido junto com os alunos do torne-se um programador, com objetivo em aprender a linguagem Golang e seus componentes",
+        "title": "Desafio de Golang",
+        "contact": {
+            "name": "Danilo Aparecido",
+            "url": "https://www.torneseumprogramador.com.br/cursos/desafio_go_lang",
+            "email": "suporte@torneseumprogramador.com.br"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Json de apresentação da API",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "home"
+                ],
+                "summary": "Home",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.Home"
+                        }
+                    }
+                }
+            }
+        },
+        "/administradores": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna uma lista de todos os administradores",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Administradores"
+                ],
+                "summary": "Lista de administradores",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model_views.AdmView"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cadastra um novo administrador",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Administradores"
+                ],
+                "summary": "Cadastrar administrador",
+                "parameters": [
+                    {
+                        "description": "Dados do Administrador",
+                        "name": "administrador",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.AdministradorDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.AdmView"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/administradores/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna os detalhes de um administrador específico pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Administradores"
+                ],
+                "summary": "Mostrar administrador",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Administrador",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.AdmView"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Altera os dados de um administrador pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Administradores"
+                ],
+                "summary": "Alterar administrador",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Administrador",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do Administrador",
+                        "name": "administrador",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.AdministradorDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.AdmView"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Exclui um administrador pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Administradores"
+                ],
+                "summary": "Excluir administrador",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Administrador",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/donos": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna uma lista de todos os donos",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donos"
+                ],
+                "summary": "Lista de donos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Dono"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cadastra um novo dono",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donos"
+                ],
+                "summary": "Cadastrar dono",
+                "parameters": [
+                    {
+                        "description": "Dados do Dono",
+                        "name": "dono",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.DonoDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Dono"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/donos/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna os detalhes de um dono específico pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donos"
+                ],
+                "summary": "Mostrar dono",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Dono",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Dono"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Altera os dados de um dono pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donos"
+                ],
+                "summary": "Alterar dono",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Dono",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados do Dono",
+                        "name": "dono",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.DonoDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Dono"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Exclui um dono pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Donos"
+                ],
+                "summary": "Excluir dono",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Dono",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        },
+        "/login": {
+            "post": {
+                "description": "Autentica um administrador e retorna um token JWT junto com informações do administrador",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Login"
+                ],
+                "summary": "Login",
+                "parameters": [
+                    {
+                        "description": "Credenciais de Login",
+                        "name": "loginDTO",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.LoginDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retorna o token JWT e informações do administrador",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.AdmTokenView"
+                        }
+                    },
+                    "400": {
+                        "description": "Email ou senha inválido ou erro ao gerar token",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pets": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna uma lista de todos os pets",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Lista de pets",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Pet"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Cadastra um novo pet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Cadastrar pet",
+                "parameters": [
+                    {
+                        "description": "Dados do Pet",
+                        "name": "pet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.PetDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Pet"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pets/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Retorna os detalhes de um pet específico pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Mostrar pet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pet",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Pet"
+                        }
+                    },
+                    "400": {
+                        "description": "Pet não encontrado ou erro na busca",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Altera os dados de um pet pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Alterar pet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pet",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados atualizados do Pet",
+                        "name": "pet",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/DTOs.PetDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Pet"
+                        }
+                    },
+                    "400": {
+                        "description": "Pet não encontrado ou erro na alteração",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Exclui um pet pelo ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Excluir pet",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do Pet",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Erro ao excluir o pet",
+                        "schema": {
+                            "$ref": "#/definitions/model_views.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "DTOs.AdministradorDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "senha": {
+                    "type": "string"
+                },
+                "super": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "DTOs.DonoDTO": {
+            "type": "object",
+            "properties": {
+                "nome": {
+                    "type": "string"
+                },
+                "telefone": {
+                    "type": "string"
+                }
+            }
+        },
+        "DTOs.LoginDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "senha": {
+                    "type": "string"
+                }
+            }
+        },
+        "DTOs.PetDTO": {
+            "type": "object",
+            "properties": {
+                "donoId": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "$ref": "#/definitions/enums.Tipo"
+                }
+            }
+        },
+        "enums.Tipo": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-comments": {
+                "Cachorro": "iota facilita a atribuição incremental de valores"
+            },
+            "x-enum-varnames": [
+                "Cachorro",
+                "Gato",
+                "Outros"
+            ]
+        },
+        "model_views.AdmTokenView": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "super": {
+                    "type": "boolean"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "model_views.AdmView": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "super": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "model_views.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "erro": {
+                    "type": "string"
+                }
+            }
+        },
+        "model_views.Home": {
+            "type": "object",
+            "properties": {
+                "docs": {
+                    "type": "string"
+                },
+                "mensagem": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Dono": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "telefone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Pet": {
+            "type": "object",
+            "properties": {
+                "donoId": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "tipo": {
+                    "$ref": "#/definitions/enums.Tipo"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

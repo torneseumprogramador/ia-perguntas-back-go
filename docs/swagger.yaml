@@ -1,0 +1,549 @@
+basePath: /
+definitions:
+  DTOs.AdministradorDTO:
+    properties:
+      email:
+        type: string
+      nome:
+        type: string
+      senha:
+        type: string
+      super:
+        type: boolean
+    type: object
+  DTOs.DonoDTO:
+    properties:
+      nome:
+        type: string
+      telefone:
+        type: string
+    type: object
+  DTOs.LoginDTO:
+    properties:
+      email:
+        type: string
+      senha:
+        type: string
+    type: object
+  DTOs.PetDTO:
+    properties:
+      donoId:
+        type: string
+      nome:
+        type: string
+      tipo:
+        $ref: '#/definitions/enums.Tipo'
+    type: object
+  enums.Tipo:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      Cachorro: iota facilita a atribuição incremental de valores
+    x-enum-varnames:
+    - Cachorro
+    - Gato
+    - Outros
+  model_views.AdmTokenView:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      nome:
+        type: string
+      super:
+        type: boolean
+      token:
+        type: string
+    type: object
+  model_views.AdmView:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      nome:
+        type: string
+      super:
+        type: boolean
+    type: object
+  model_views.ErrorResponse:
+    properties:
+      erro:
+        type: string
+    type: object
+  model_views.Home:
+    properties:
+      docs:
+        type: string
+      mensagem:
+        type: string
+    type: object
+  models.Dono:
+    properties:
+      id:
+        type: string
+      nome:
+        type: string
+      telefone:
+        type: string
+    type: object
+  models.Pet:
+    properties:
+      donoId:
+        type: string
+      id:
+        type: string
+      nome:
+        type: string
+      tipo:
+        $ref: '#/definitions/enums.Tipo'
+    type: object
+info:
+  contact:
+    email: suporte@torneseumprogramador.com.br
+    name: Danilo Aparecido
+    url: https://www.torneseumprogramador.com.br/cursos/desafio_go_lang
+  description: Este é um app construido junto com os alunos do torne-se um programador,
+    com objetivo em aprender a linguagem Golang e seus componentes
+  title: Desafio de Golang
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: Json de apresentação da API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model_views.Home'
+      summary: Home
+      tags:
+      - home
+  /administradores:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os administradores
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model_views.AdmView'
+            type: array
+      security:
+      - Bearer: []
+      summary: Lista de administradores
+      tags:
+      - Administradores
+    post:
+      consumes:
+      - application/json
+      description: Cadastra um novo administrador
+      parameters:
+      - description: Dados do Administrador
+        in: body
+        name: administrador
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.AdministradorDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model_views.AdmView'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Cadastrar administrador
+      tags:
+      - Administradores
+  /administradores/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Exclui um administrador pelo ID
+      parameters:
+      - description: ID do Administrador
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - Bearer: []
+      summary: Excluir administrador
+      tags:
+      - Administradores
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um administrador específico pelo ID
+      parameters:
+      - description: ID do Administrador
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model_views.AdmView'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Mostrar administrador
+      tags:
+      - Administradores
+    put:
+      consumes:
+      - application/json
+      description: Altera os dados de um administrador pelo ID
+      parameters:
+      - description: ID do Administrador
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Dados do Administrador
+        in: body
+        name: administrador
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.AdministradorDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model_views.AdmView'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Alterar administrador
+      tags:
+      - Administradores
+  /donos:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os donos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Dono'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Lista de donos
+      tags:
+      - Donos
+    post:
+      consumes:
+      - application/json
+      description: Cadastra um novo dono
+      parameters:
+      - description: Dados do Dono
+        in: body
+        name: dono
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.DonoDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Dono'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Cadastrar dono
+      tags:
+      - Donos
+  /donos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Exclui um dono pelo ID
+      parameters:
+      - description: ID do Dono
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      security:
+      - Bearer: []
+      summary: Excluir dono
+      tags:
+      - Donos
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um dono específico pelo ID
+      parameters:
+      - description: ID do Dono
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Dono'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Mostrar dono
+      tags:
+      - Donos
+    put:
+      consumes:
+      - application/json
+      description: Altera os dados de um dono pelo ID
+      parameters:
+      - description: ID do Dono
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Dados do Dono
+        in: body
+        name: dono
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.DonoDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Dono'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Alterar dono
+      tags:
+      - Donos
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Autentica um administrador e retorna um token JWT junto com informações
+        do administrador
+      parameters:
+      - description: Credenciais de Login
+        in: body
+        name: loginDTO
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Retorna o token JWT e informações do administrador
+          schema:
+            $ref: '#/definitions/model_views.AdmTokenView'
+        "400":
+          description: Email ou senha inválido ou erro ao gerar token
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      summary: Login
+      tags:
+      - Login
+  /pets:
+    get:
+      consumes:
+      - application/json
+      description: Retorna uma lista de todos os pets
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Pet'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Lista de pets
+      tags:
+      - Pets
+    post:
+      consumes:
+      - application/json
+      description: Cadastra um novo pet
+      parameters:
+      - description: Dados do Pet
+        in: body
+        name: pet
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.PetDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Pet'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Cadastrar pet
+      tags:
+      - Pets
+  /pets/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Exclui um pet pelo ID
+      parameters:
+      - description: ID do Pet
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Erro ao excluir o pet
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Excluir pet
+      tags:
+      - Pets
+    get:
+      consumes:
+      - application/json
+      description: Retorna os detalhes de um pet específico pelo ID
+      parameters:
+      - description: ID do Pet
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Pet'
+        "400":
+          description: Pet não encontrado ou erro na busca
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Mostrar pet
+      tags:
+      - Pets
+    put:
+      consumes:
+      - application/json
+      description: Altera os dados de um pet pelo ID
+      parameters:
+      - description: ID do Pet
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Dados atualizados do Pet
+        in: body
+        name: pet
+        required: true
+        schema:
+          $ref: '#/definitions/DTOs.PetDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Pet'
+        "400":
+          description: Pet não encontrado ou erro na alteração
+          schema:
+            $ref: '#/definitions/model_views.ErrorResponse'
+      security:
+      - Bearer: []
+      summary: Alterar pet
+      tags:
+      - Pets
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
